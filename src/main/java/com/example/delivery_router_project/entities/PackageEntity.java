@@ -20,6 +20,14 @@ public class PackageEntity {
     @JoinColumn()
     private NodeEntity destinationNode;
 
+    @OneToOne
+    @JoinColumn
+    private AccountEntity owner;
+
+    @OneToOne
+    @JoinColumn
+    private AccountEntity courier;
+
 
     public Long getId() {
         return id;
