@@ -3,6 +3,7 @@ package com.example.delivery_router_project.services;
 import com.example.delivery_router_project.entities.AccountEntity;
 import com.example.delivery_router_project.entities.NodeEntity;
 import com.example.delivery_router_project.entities.PackageEntity;
+import com.example.delivery_router_project.entities.UserTypeEnum;
 import com.example.delivery_router_project.repositories.AccountRepository;
 import com.example.delivery_router_project.repositories.GraphRepository;
 import com.example.delivery_router_project.repositories.PackageRepository;
@@ -27,27 +28,21 @@ public class DataService {
         this.accountRepository = accountRepository;
     }
 
-    public GenericDTO callbackProcessorFunction(String username, GenericDTO dto, BiConsumer<AccountEntity, GenericDTO>... callbacks){
+    public void callbackProcessorFunction(String username, GenericDTO dto, BiConsumer<AccountEntity, GenericDTO>... callbacks){
         AccountEntity account = accountRepository.findByName(username);
         for(BiConsumer<AccountEntity, GenericDTO> callback : callbacks){
             callback.accept(account, dto);
         }
-
-        return dto;
     }
 
-    public Map<Long, NodeEntity> getGraphOfCity(AccountEntity account){
-        return graphRepository.findByName(account.getTown()).getNodes();
+    public void getGraphOfCity(AccountEntity account, GenericDTO dto){
+        dto.graph = graphRepository.findByName(account.getTown());
     }
 
-    public List<PackageEntity> getMyPackages(AccountEntity account){
-        return account.getOwnedPackages();
-
+    public void getMyPackages(AccountEntity account, GenericDTO dto){
+        dto.packages = account.getOwnedPackages();
     }
 
-    public List<LinkedList<Long>> getRoutes(AccountEntity account){
-
-    }
 
 
 

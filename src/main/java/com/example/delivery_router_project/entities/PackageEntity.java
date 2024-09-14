@@ -2,6 +2,8 @@ package com.example.delivery_router_project.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class PackageEntity {
     private Long id;
@@ -27,6 +29,10 @@ public class PackageEntity {
     @OneToOne
     @JoinColumn
     private AccountEntity courier;
+
+    @OneToMany
+    @JoinColumn
+    private List<NodeEntity>  path;
 
 
     public Long getId() {

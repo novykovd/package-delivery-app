@@ -27,4 +27,8 @@ public class AccountEntity {
     public List<PackageEntity> getOwnedPackages() {
         return ownedPackages;
     }
+
+    public UserTypeEnum getType() {
+        return type;
+    }
 }

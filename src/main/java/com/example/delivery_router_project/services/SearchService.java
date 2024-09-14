@@ -25,26 +25,29 @@ public class SearchService {
         this.packageRepository = packageRepository;
     }
 
-    public List<LinkedList<Long>> getListOfPaths(List<Long> list, TownEnum town){
+    static class Search{
+        static void dijikstra(Long start, Long destination, Map<Long, NodeEntity> graph, List resultObject){
+            Queue<Long> queue = new LinkedList<>();
+            queue.add(start);
 
-        class Search{
-            static void dijikstra(Long start, Long destination, Map<Long, NodeEntity> graph, List resultObject){
-                Queue<Long> queue = new LinkedList<>();
-                queue.add(start);
+            Consumer<Long> recursiveSearch = (pointer) -> {
 
-                Consumer<Long> recursiveSearch = (pointer) -> {
+            };
 
-                };
-
-                while(!queue.isEmpty()){
-                    recursiveSearch.accept(queue.poll());
-                }
+            while(!queue.isEmpty()){
+                recursiveSearch.accept(queue.poll());
             }
         }
+    }
+
+    public List<LinkedList<Long>> getListOfPaths(List<Long> list, TownEnum town){
 
         GraphEntity graph = graphRepository.findByName(town);
         ExecutorService executorService = Executors.newFixedThreadPool(3);
         ArrayList<LinkedList<Long>> results = new ArrayList<>();
+        
+
+
 
         for(PackageEntity parsel : list){
             executorService.submit(() -> {
