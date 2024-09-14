@@ -7,6 +7,7 @@ import com.example.delivery_router_project.entities.UserTypeEnum;
 import com.example.delivery_router_project.repositories.AccountRepository;
 import com.example.delivery_router_project.repositories.GraphRepository;
 import com.example.delivery_router_project.repositories.PackageRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,10 @@ import java.util.function.BiConsumer;
 
 @Service
 public class DataService {
+
+
+    @Autowired
+    private SearchService search;
 
     private final GraphRepository graphRepository;
     private final PackageRepository packageRepository;
@@ -41,6 +46,11 @@ public class DataService {
 
     public void getMyPackages(AccountEntity account, GenericDTO dto){
         dto.packages = account.getOwnedPackages();
+    }
+
+    public void saveNewPackage(PackageEntity aPackage){
+        packageRepository.save(aPackage);
+        search.updatePathToPackage(aPackage.getId());
     }
 
 

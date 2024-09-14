@@ -12,7 +12,7 @@ public class PackageEntity {
     private PackageType type;
     @Enumerated(EnumType.STRING)
     private TownEnum town;
-    private String description;
+    private String name;
 
     @OneToOne()
     @JoinColumn()
@@ -30,9 +30,9 @@ public class PackageEntity {
     @JoinColumn
     private AccountEntity courier;
 
-    @OneToMany
-    @JoinColumn
-    private List<NodeEntity>  path;
+
+    //idk ig its ok that its not explicitly connected to the node tab
+    private List<Long>  path;
 
 
     public Long getId() {
@@ -45,5 +45,17 @@ public class PackageEntity {
 
     public NodeEntity getDestinationNode() {
         return destinationNode;
+    }
+
+    public void setPath(List<Long> path) {
+        this.path = path;
+    }
+
+    public List<Long> getPath() {
+        return path;
+    }
+
+    public TownEnum getTown() {
+        return town;
     }
 }

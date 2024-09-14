@@ -10,4 +10,6 @@ public interface PackageRepository extends JpaRepository<PackageEntity, Long> {
     public List<PackageEntity> findByTown(TownEnum town);
 
     public List<PackageEntity> findAll(Iterable<Long> ids);
+
+    public PackageEntity findByName(String name);
 }
