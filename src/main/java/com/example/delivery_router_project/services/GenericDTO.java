@@ -9,5 +9,4 @@ import java.util.List;
 public class GenericDTO {
     GraphEntity graph;
     List<PackageEntity> packages;
-    List<LinkedList<Long>> routes;
 }

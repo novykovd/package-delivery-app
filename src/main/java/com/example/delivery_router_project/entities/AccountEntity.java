@@ -28,7 +28,15 @@ public class AccountEntity {
         return ownedPackages;
     }
 
-    public UserTypeEnum getType() {
+    public String getType() {
         return type;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }
