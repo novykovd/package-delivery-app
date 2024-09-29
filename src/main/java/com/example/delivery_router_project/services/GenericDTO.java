@@ -7,6 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class GenericDTO {
-    GraphEntity graph;
-    List<PackageEntity> packages;
+    public GraphEntity graph;
+    public List<PackageEntity> packages;
 }

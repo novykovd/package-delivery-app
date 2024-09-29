@@ -50,7 +50,6 @@ public class DataService {
 
     public void saveNewPackage(PackageEntity aPackage){
         packageRepository.save(aPackage);
-        search.updatePathToPackage(aPackage.getId());
     }
 
 

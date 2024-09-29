@@ -13,8 +13,8 @@ public class NodeEntity {
     private Long id;
 
     @OneToMany
-    @MapKey(name = "id")
-    private Map<Long, EdgeEntity> outbound;
+    @JoinColumn
+    private Map<NodeEntity, > neighbors;
 
 
     public Long getId() {

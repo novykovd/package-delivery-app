@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
+@EntityListeners()
 public class PackageEntity {
     private Long id;
 

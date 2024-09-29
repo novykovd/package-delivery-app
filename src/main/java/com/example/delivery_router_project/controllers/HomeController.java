@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/home")
@@ -18,21 +20,15 @@ public class HomeController {
     @Autowired
     DataService data;
 
-    @GetMapping
-    public String home(Model model, Principal principal){
+    @GetMapping("/rest")
+    @ResponseBody
+    public GenericDTO home(Principal principal){
         Authentication authentication = (Authentication) principal;
         String username = authentication.getName();
         GenericDTO dto = new GenericDTO();
         data.callbackProcessorFunction(username, dto, data::getGraphOfCity, data::getMyPackages);
 
-        //convert to vis js acceptable format which im procrastinating on doing
-
-        return "home";
-    }
-
-    @PostMapping
-    public void addP(@ModelAttribute PackageEntity aPackage){
-        data.saveNewPackage(aPackage);
+        return dto;
     }
 
 }
