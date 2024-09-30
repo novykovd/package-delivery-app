@@ -27,7 +27,6 @@ public class HomeController {
         String username = authentication.getName();
         GenericDTO dto = new GenericDTO();
         data.callbackProcessorFunction(username, dto, data::getGraphOfCity, data::getMyPackages);
-
         return dto;
     }
 

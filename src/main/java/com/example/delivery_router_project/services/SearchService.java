@@ -23,13 +23,17 @@ public class SearchService {
 
     @Autowired
     private EntityManager em;
-    private final GraphRepository graphRepository;
-    private final PackageRepository packageRepository;
+    private GraphRepository graphRepository;
+    private PackageRepository packageRepository;
 
 
     public SearchService(GraphRepository graphRepository, PackageRepository packageRepository){
         this.graphRepository = graphRepository;
         this.packageRepository = packageRepository;
+    }
+
+    public SearchService(){
+
     }
 
     private static class NodeDistance {
@@ -97,6 +101,10 @@ public class SearchService {
 
             return path;
         }
+    }
+
+    public List<NodeEntity> findPath(NodeEntity start, NodeEntity end, Map<Long, NodeEntity> graph){
+        return Search.dijkstra(start, end, graph);
     }
 
     @Transactional
