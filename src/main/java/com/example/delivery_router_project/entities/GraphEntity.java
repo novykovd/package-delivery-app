@@ -2,7 +2,6 @@ package com.example.delivery_router_project.entities;
 
 import jakarta.persistence.*;
 
-import java.util.List;
 import java.util.Map;
 
 @Entity
@@ -15,6 +14,10 @@ public class GraphEntity {
     @OneToMany
     @MapKey(name = "id")
     private Map<Long, NodeEntity> nodes;
+
+    @OneToMany
+    @MapKeyJoinColumn
+    private Map<NodeEntity, NodeEntity> paths;
 
     public Map<Long, NodeEntity> getNodes() {
         return nodes;

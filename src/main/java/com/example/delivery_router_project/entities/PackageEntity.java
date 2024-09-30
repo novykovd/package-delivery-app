@@ -1,11 +1,12 @@
 package com.example.delivery_router_project.entities;
 
+import com.example.delivery_router_project.listeners.PackageListener;
 import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
-@EntityListeners()
+@EntityListeners(PackageListener.class)
 public class PackageEntity {
     private Long id;
 
@@ -33,7 +34,9 @@ public class PackageEntity {
 
 
     //idk ig its ok that its not explicitly connected to the node tab
-    private List<Long>  path;
+    @OneToMany
+    @JoinColumn
+    private List<NodeEntity>  path;
 
 
     public Long getId() {
@@ -48,11 +51,11 @@ public class PackageEntity {
         return destinationNode;
     }
 
-    public void setPath(List<Long> path) {
+    public void setPath(List<NodeEntity> path) {
         this.path = path;
     }
 
-    public List<Long> getPath() {
+    public List<NodeEntity> getPath() {
         return path;
     }
 

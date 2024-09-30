@@ -4,13 +4,26 @@ import jakarta.persistence.*;
 
 @Entity
 public class EdgeEntity {
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int weight;
 
-    @OneToOne
-    @JoinColumn
-    private NodeEntity destination;
+    @ManyToOne
+    @JoinColumn(name = "source_node_id")
+    private NodeEntity sourceNode;
 
+    @ManyToOne
+    @JoinColumn(name = "target_node_id")
+    private NodeEntity targetNode;
+
+    private Integer weight;  // for weighted graphs
+
+    public Integer getWeight() {
+        return weight;
+    }
+
+    public NodeEntity getTargetNode() {
+        return targetNode;
+    }
 }

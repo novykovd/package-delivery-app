@@ -1,10 +1,7 @@
 package com.example.delivery_router_project.services;
 
 
-import com.example.delivery_router_project.entities.GraphEntity;
-import com.example.delivery_router_project.entities.NodeEntity;
-import com.example.delivery_router_project.entities.PackageEntity;
-import com.example.delivery_router_project.entities.TownEnum;
+import com.example.delivery_router_project.entities.*;
 import com.example.delivery_router_project.repositories.GraphRepository;
 import com.example.delivery_router_project.repositories.PackageRepository;
 import jakarta.persistence.EntityManager;
@@ -35,15 +32,70 @@ public class SearchService {
         this.packageRepository = packageRepository;
     }
 
-    static class Search{
-        static List<Long> dijkstra(Long start, Long destination, Map<Long, NodeEntity> graph){
-            PriorityQueue<NodeEntity> heap = new PriorityQueue<>();
+    private static class NodeDistance {
+        private final NodeEntity node;
+        private final int distance;
+
+        public NodeDistance(NodeEntity node, int distance) {
+            this.node = node;
+            this.distance = distance;
+        }
+
+        public NodeEntity getNode() {
+            return node;
+        }
+
+        public int getDistance() {
+            return distance;
+        }
+    }
+
+    private static class Search{
+        static List<NodeEntity> dijkstra(NodeEntity start, NodeEntity destination, Map<Long, NodeEntity> graph){
+            PriorityQueue<NodeDistance> heap = new PriorityQueue<>(Comparator.comparingInt(NodeDistance::getDistance));
             Map<NodeEntity, Integer> distances = new HashMap<>();
-            Map<NodeEntity, NodeEntity> path = new HashMap<>();
-            heap.add(graph.get(start));
-            while(!heap.isEmpty()){
-                NodeEntity focus = heap.poll();
+            Map<NodeEntity, NodeEntity> paths = new HashMap<>();
+
+
+            //set up
+            heap.add(new NodeDistance(start, 0));
+            paths.put(start, null);
+            for(NodeEntity nodeEntity : graph.values()){
+                distances.put(nodeEntity, Integer.MAX_VALUE); //infinity
             }
+
+
+            //search
+            while(!heap.isEmpty()){
+                NodeEntity current = heap.poll().getNode();
+
+
+
+                for(EdgeEntity edge : current.getOutgoingEdges()){
+                    NodeEntity neighbor = edge.getTargetNode();
+                    int weight = edge.getWeight() + distances.get(current);
+
+                    if(weight < distances.get(neighbor)){
+                        distances.put(neighbor, weight);
+                        heap.add(new NodeDistance(neighbor, weight));
+                        paths.put(neighbor, current);
+                    }
+                }
+            }
+
+            //safeguards
+            if(distances.get(destination) == Integer.MAX_VALUE) return null;
+
+            //calculating the resulting path
+            List<NodeEntity> path = new ArrayList<>();
+            NodeEntity c = destination;
+
+            while(paths.get(c) != null){
+                path.add(c);
+                c = paths.get(c);
+            }
+
+            return path;
         }
     }
 
@@ -58,7 +110,7 @@ public class SearchService {
             et.begin();
 
             PackageEntity aPackage = em.find(PackageEntity.class, id, LockModeType.PESSIMISTIC_WRITE, properties);
-            aPackage.setPath(Search.dijkstra(aPackage.getStartNode().getId(), aPackage.getDestinationNode().getId(), graphRepository.findByName(aPackage.getTown()).getNodes()));
+            aPackage.setPath(Search.dijkstra(aPackage.getStartNode(), aPackage.getDestinationNode(), graphRepository.findByName(aPackage.getTown()).getNodes()));
 
             em.merge(aPackage);
             et.commit();
@@ -77,7 +129,7 @@ public class SearchService {
         for(Long parselId : list){
             PackageEntity parsel = packageRepository.getReferenceById(parselId);
             executorService.submit(() -> {
-                Search.dijkstra(parsel.getStartNode().getId(), parsel.getDestinationNode().getId(), graph.getNodes());
+                Search.dijkstra(parsel.getStartNode(), parsel.getDestinationNode(), graph.getNodes());
             });
         }
 
