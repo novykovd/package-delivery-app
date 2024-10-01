@@ -98,6 +98,7 @@ public class SearchService {
                 path.add(c);
                 c = paths.get(c);
             }
+            path.add(c);
 
             return path;
         }

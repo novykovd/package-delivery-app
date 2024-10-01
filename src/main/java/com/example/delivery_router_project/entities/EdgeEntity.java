@@ -9,11 +9,11 @@ public class EdgeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "source_node_id")
     private NodeEntity sourceNode;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "target_node_id")
     private NodeEntity targetNode;
 
@@ -25,5 +25,29 @@ public class EdgeEntity {
 
     public NodeEntity getTargetNode() {
         return targetNode;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public NodeEntity getSourceNode() {
+        return sourceNode;
+    }
+
+    public void setSourceNode(NodeEntity sourceNode) {
+        this.sourceNode = sourceNode;
+    }
+
+    public void setTargetNode(NodeEntity targetNode) {
+        this.targetNode = targetNode;
+    }
+
+    public void setWeight(Integer weight) {
+        this.weight = weight;
     }
 }

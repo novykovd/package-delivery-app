@@ -29,7 +29,7 @@ public class AccountEntity {
     }
 
     public String getType() {
-        return type;
+        return type.toString();
     }
 
     public String getUsername() {
