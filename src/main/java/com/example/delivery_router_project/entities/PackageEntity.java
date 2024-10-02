@@ -8,6 +8,9 @@ import java.util.List;
 @Entity
 @EntityListeners(PackageListener.class)
 public class PackageEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Enumerated(EnumType.STRING)
@@ -16,27 +19,87 @@ public class PackageEntity {
     private TownEnum town;
     private String name;
 
-    @OneToOne()
-    @JoinColumn()
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn
     private NodeEntity startNode;
 
-    @OneToOne()
-    @JoinColumn()
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn
+    private GraphEntity graphEntity;
+
+    public GraphEntity getGraphEntity() {
+        return graphEntity;
+    }
+
+    public void setGraphEntity(GraphEntity graphEntity) {
+        this.graphEntity = graphEntity;
+    }
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn
     private NodeEntity destinationNode;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
     private AccountEntity owner;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
     private AccountEntity courier;
 
-
     //idk ig its ok that its not explicitly connected to the node tab
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn
     private List<NodeEntity>  path;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public PackageType getType() {
+        return type;
+    }
+
+    public void setType(PackageType type) {
+        this.type = type;
+    }
+
+    public void setTown(TownEnum town) {
+        this.town = town;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setStartNode(NodeEntity startNode) {
+        this.startNode = startNode;
+    }
+
+    public void setDestinationNode(NodeEntity destinationNode) {
+        this.destinationNode = destinationNode;
+    }
+
+    public AccountEntity getOwner() {
+        return owner;
+    }
+
+    public void setOwner(AccountEntity owner) {
+        this.owner = owner;
+    }
+
+    public AccountEntity getCourier() {
+        return courier;
+    }
+
+    public void setCourier(AccountEntity courier) {
+        this.courier = courier;
+    }
 
 
     public Long getId() {

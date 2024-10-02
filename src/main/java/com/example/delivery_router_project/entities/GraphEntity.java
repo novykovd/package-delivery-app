@@ -7,11 +7,14 @@ import java.util.Map;
 @Entity
 public class GraphEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     @Enumerated(value = EnumType.STRING)
     private TownEnum town;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @MapKey(name = "id")
     private Map<Long, NodeEntity> nodes;
 
@@ -30,5 +33,13 @@ public class GraphEntity {
 
     public void setNodes(Map<Long, NodeEntity> nodes) {
         this.nodes = nodes;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

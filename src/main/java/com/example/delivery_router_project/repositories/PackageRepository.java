@@ -9,7 +9,7 @@ import java.util.List;
 public interface PackageRepository extends JpaRepository<PackageEntity, Long> {
     public List<PackageEntity> findByTown(TownEnum town);
 
-    public List<PackageEntity> findAll(Iterable<Long> ids);
+    public List<PackageEntity> findByIdIn(List<Long> ids);
 
     public PackageEntity findByName(String name);
 }

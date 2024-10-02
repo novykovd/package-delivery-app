@@ -41,7 +41,7 @@ public class DataService {
     }
 
     public void getGraphOfCity(AccountEntity account, GenericDTO dto){
-        dto.graph = graphRepository.findByName(account.getTown());
+        dto.graph = graphRepository.findByTown(account.getTown());
     }
 
     public void getMyPackages(AccountEntity account, GenericDTO dto){

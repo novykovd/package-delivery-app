@@ -10,12 +10,12 @@ public class AccountEntity {
     @GeneratedValue
     private Long id;
 
-    private String username;
+    private String name;
     private UserTypeEnum type;
     private String password;
     private TownEnum town;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn
     private List<PackageEntity> ownedPackages;
 
@@ -33,7 +33,7 @@ public class AccountEntity {
     }
 
     public String getUsername() {
-        return username;
+        return name;
     }
 
     public String getPassword() {

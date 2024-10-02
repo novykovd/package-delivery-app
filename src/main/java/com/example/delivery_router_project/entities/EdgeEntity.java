@@ -9,11 +9,11 @@ public class EdgeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "source_node_id")
     private NodeEntity sourceNode;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "target_node_id")
     private NodeEntity targetNode;
 

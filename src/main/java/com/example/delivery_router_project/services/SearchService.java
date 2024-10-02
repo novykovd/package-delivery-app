@@ -119,7 +119,7 @@ public class SearchService {
             et.begin();
 
             PackageEntity aPackage = em.find(PackageEntity.class, id, LockModeType.PESSIMISTIC_WRITE, properties);
-            aPackage.setPath(Search.dijkstra(aPackage.getStartNode(), aPackage.getDestinationNode(), graphRepository.findByName(aPackage.getTown()).getNodes()));
+            aPackage.setPath(Search.dijkstra(aPackage.getStartNode(), aPackage.getDestinationNode(), aPackage.getGraphEntity().getNodes()));
 
             em.merge(aPackage);
             et.commit();
@@ -131,7 +131,7 @@ public class SearchService {
 
     public List<LinkedList<Long>> getListOfPaths(List<Long> list, TownEnum town){
 
-        GraphEntity graph = graphRepository.findByName(town);
+        GraphEntity graph = graphRepository.findByTown(town);
         ExecutorService executorService = Executors.newFixedThreadPool(3);
         ArrayList<LinkedList<Long>> results = new ArrayList<>();
 
