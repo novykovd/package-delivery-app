@@ -6,15 +6,15 @@ import jakarta.persistence.*;
 public class EdgeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "source_node_id")
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn
     private NodeEntity sourceNode;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "target_node_id")
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn
     private NodeEntity targetNode;
 
     private Integer weight;  // for weighted graphs

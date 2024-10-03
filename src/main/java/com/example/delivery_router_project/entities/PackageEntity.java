@@ -19,12 +19,12 @@ public class PackageEntity {
     private TownEnum town;
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn
     private NodeEntity startNode;
 
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn
     private GraphEntity graphEntity;
 
@@ -36,20 +36,20 @@ public class PackageEntity {
         this.graphEntity = graphEntity;
     }
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn
     private NodeEntity destinationNode;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn
     private AccountEntity owner;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn
     private AccountEntity courier;
 
     //idk ig its ok that its not explicitly connected to the node tab
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn
     private List<NodeEntity>  path;
 

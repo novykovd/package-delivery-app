@@ -14,7 +14,7 @@ public class GraphEntity {
     @Enumerated(value = EnumType.STRING)
     private TownEnum town;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.PERSIST)
     @MapKey(name = "id")
     private Map<Long, NodeEntity> nodes;
 

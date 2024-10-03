@@ -16,7 +16,7 @@ public class NodeEntity {
 
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn
     private List<EdgeEntity> outgoingEdges = new ArrayList<>();
 

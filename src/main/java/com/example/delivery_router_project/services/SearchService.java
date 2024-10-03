@@ -121,7 +121,6 @@ public class SearchService {
             PackageEntity aPackage = em.find(PackageEntity.class, id, LockModeType.PESSIMISTIC_WRITE, properties);
             aPackage.setPath(Search.dijkstra(aPackage.getStartNode(), aPackage.getDestinationNode(), aPackage.getGraphEntity().getNodes()));
 
-            em.merge(aPackage);
             et.commit();
 
         } catch (PessimisticLockException e){

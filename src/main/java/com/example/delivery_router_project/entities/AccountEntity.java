@@ -15,7 +15,7 @@ public class AccountEntity {
     private String password;
     private TownEnum town;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn
     private List<PackageEntity> ownedPackages;
 

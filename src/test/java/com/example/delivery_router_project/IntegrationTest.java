@@ -23,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ActiveProfiles("test")
 @SpringBootTest
-@Transactional
 public class IntegrationTest {
     //when i save
     //and after i query
@@ -36,53 +35,52 @@ public class IntegrationTest {
     @Autowired
     GraphRepository graphRepository;
 
+    PackageEntity packageEntity = new PackageEntity();
+
     @Test
     public void CheckIfPersisted(){
         NodeEntity node1 = new NodeEntity();
         NodeEntity node2 = new NodeEntity();
-
-        node1.setId(1L);
-        node2.setId(2L);
 
         EdgeEntity edge12 = new EdgeEntity();
 
         edge12.setTargetNode(node2);
         edge12.setWeight(10);
         edge12.setSourceNode(node1);
-        edge12.setId(3L);
 
         List<EdgeEntity> edges = new ArrayList<>();
         edges.add(edge12);
 
         node1.setOutgoingEdges(edges);
 
+
+
+
+        packageEntity.setStartNode(node1);
+        packageEntity.setDestinationNode(node2);
+
+        packageRepository.save(packageEntity);
+
         Map<Long, NodeEntity> graph = new HashMap<>();
         graph.put(node1.getId(), node1);
         graph.put(node2.getId(), node2);
 
-        PackageEntity packageEntity = new PackageEntity();
-        packageEntity.setStartNode(node1);
-        packageEntity.setDestinationNode(node2);
-        packageEntity.setId(1L);
+        GraphEntity graphEntity = new GraphEntity();
+        graphEntity.setNodes(graph);
+        packageEntity.setGraphEntity(graphEntity);
 
         packageRepository.save(packageEntity);
 
-        GraphEntity graphEntity = new GraphEntity();
-        graphEntity.setNodes(graph);
-
-        packageEntity.setGraphEntity(graphEntity);
-
-
-        assertNotNull(packageRepository.getReferenceById(1L));
-        assertEquals(packageRepository.getReferenceById(1L).getStartNode(), node1);
+        assertNotNull(packageEntity.getId());
+        assertEquals(packageEntity.getStartNode(), node1);
 
 
     }
 
     @Test
     public void CheckIfCalculated(){
-        assertNotNull(packageRepository.getReferenceById(1L).getPath());
-        assertEquals(packageRepository.getReferenceById(1L).getPath().size(), 2);
+        assertNotNull(packageEntity.getPath());
+        assertEquals(packageEntity.getPath().size(), 2);
     }
 
 }
