@@ -7,16 +7,22 @@ import jakarta.persistence.PostPersist;
 import jakarta.persistence.PostUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.stereotype.Component;
 
-@Configurable
+@Component
 public class PackageListener {
+
+    private static SearchService search;
+
     @Autowired
-    private SearchService search;
+    public void setSearch(SearchService search){
+        this.search = search;
+    }
 
     @PostPersist
     @PostUpdate
     public void onPostPersist(PackageEntity entity){
-        if(entity.getGraphEntity() == null) return;
+        if(entity.getGraphEntity() == null || entity.getGraphEntity().getNodes().isEmpty()) return;
         if(entity.getDestinationNode() == null) return;
         if(entity.getStartNode() == null) return;
         search.updatePathToPackage(entity.getId());
