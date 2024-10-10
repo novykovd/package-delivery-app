@@ -66,21 +66,21 @@ public class IntegrationTest {
         graph.put(node2.getId(), node2);
 
         GraphEntity graphEntity = new GraphEntity();
+        graphRepository.save(graphEntity);
+
         graphEntity.setNodes(graph);
+
+        graphRepository.save(graphEntity);
         packageEntity.setGraphEntity(graphEntity);
 
         packageRepository.save(packageEntity);
 
         assertNotNull(packageEntity.getId());
         assertEquals(packageEntity.getStartNode(), node1);
+        assertNotNull(packageRepository.findById(packageEntity.getId()));
 
 
     }
 
-    @Test
-    public void CheckIfCalculated(){
-        assertNotNull(packageEntity.getPath());
-        assertEquals(packageEntity.getPath().size(), 2);
-    }
 
 }

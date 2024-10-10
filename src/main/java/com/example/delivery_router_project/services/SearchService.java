@@ -7,6 +7,7 @@ import com.example.delivery_router_project.repositories.PackageRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.LockModeType;
+import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.hibernate.PessimisticLockException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,24 +109,18 @@ public class SearchService {
         return Search.dijkstra(start, end, graph);
     }
 
+    @PersistenceContext
+    private EntityManager manager;
+
     @Transactional
     public void updatePathToPackage(Long id){
-
         Map<String, Object> properties = new HashMap<>();
         properties.put("javax.persistence.lock.timeout", 15000);
-        EntityTransaction et = em.getTransaction();
 
-        try {
-            et.begin();
+        PackageEntity aPackage = manager.find(PackageEntity.class, id, LockModeType.PESSIMISTIC_WRITE, properties);
+        aPackage.setPath(Search.dijkstra(aPackage.getStartNode(), aPackage.getDestinationNode(), aPackage.getGraphEntity().getNodes()));
+        manager.merge(aPackage);
 
-            PackageEntity aPackage = em.find(PackageEntity.class, id, LockModeType.PESSIMISTIC_WRITE, properties);
-            aPackage.setPath(Search.dijkstra(aPackage.getStartNode(), aPackage.getDestinationNode(), aPackage.getGraphEntity().getNodes()));
-
-            et.commit();
-
-        } catch (PessimisticLockException e){
-            //wtf? i dont see how the shit could be locked?? race conditions?
-        }
     }
 
     public List<LinkedList<Long>> getListOfPaths(List<Long> list, TownEnum town){

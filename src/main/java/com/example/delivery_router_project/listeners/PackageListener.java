@@ -22,7 +22,7 @@ public class PackageListener {
     @PostPersist
     @PostUpdate
     public void onPostPersist(PackageEntity entity){
-        if(entity.getGraphEntity() == null) return;
+        if(entity.getGraphEntity() == null || entity.getGraphEntity().getNodes().isEmpty()) return;
         if(entity.getDestinationNode() == null) return;
         if(entity.getStartNode() == null) return;
         search.updatePathToPackage(entity.getId());
